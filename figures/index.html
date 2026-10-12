@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quietbit Figures — paper-ready method diagrams from a description</title>
+<meta name="description" content="Describe your method in a sentence and get a clean, paper-style architecture diagram. Built for computer science, robotics and autonomous-driving papers.">
+<meta property="og:title" content="Quietbit Figures">
+<meta property="og:description" content="Describe your method. Get a paper-ready figure.">
+<meta property="og:image" content="img/og.png">
+<link rel="icon" href="img/logo.png">
+<style>
+:root { --ink: #1F1F1F; --muted: #595959; --line: #D8D8D8; --gold: #E0A100; --gold-fill: #FFF2CC; --aqua: #4BACC6; --bg: #FFFFFF; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 "Times New Roman", Times, "Songti SC", serif; }
+main { max-width: 960px; margin: 0 auto; padding: 0 20px 64px; }
+header { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: bold; letter-spacing: .02em; }
+.brand img { width: 30px; height: 30px; }
+.lang { font: 14px/1 system-ui, sans-serif; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 4px; padding: 6px 10px; cursor: pointer; }
+h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.15; margin: 56px 0 14px; }
+h1 em { font-style: normal; background: linear-gradient(transparent 62%, #FFE699 62%); }
+.lead { font-size: 20px; color: var(--muted); max-width: 680px; margin: 0 0 28px; }
+h2 { font-size: 26px; margin: 64px 0 8px; padding-left: 14px; border-left: 6px solid var(--gold); }
+.sub { color: var(--muted); margin: 0 0 24px; }
+form.signup { display: flex; flex-wrap: wrap; gap: 10px; max-width: 620px; }
+form.signup input, form.signup select { font: 16px system-ui, sans-serif; padding: 12px 14px; border: 1px solid #A5A5A5; border-radius: 4px; flex: 1 1 220px; min-width: 0; background: #fff; color: var(--ink); }
+form.signup button { font: 600 16px system-ui, sans-serif; padding: 12px 20px; border: 1.5px solid var(--gold); background: var(--gold-fill); color: var(--ink); border-radius: 4px; cursor: pointer; }
+form.signup button:hover { background: #FFE699; }
+.note { font: 14px/1.5 system-ui, sans-serif; color: var(--muted); margin-top: 10px; }
+.thanks { display: none; font: 16px system-ui, sans-serif; padding: 12px 14px; border: 1.5px solid var(--gold); background: var(--gold-fill); border-radius: 4px; max-width: 620px; }
+.example { margin: 28px 0 40px; }
+.prompt { font: 15px/1.55 ui-monospace, Menlo, monospace; background: #F2F2F2; border: 1px dashed #A5A5A5; border-radius: 4px; padding: 12px 14px; color: var(--ink); }
+.prompt::before { content: "you type"; display: block; font: 600 12px system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.arrow { text-align: center; color: var(--muted); font: 13px system-ui, sans-serif; margin: 8px 0; }
+.figure { border: 1px solid var(--line); border-radius: 4px; padding: 8px; overflow-x: auto; }
+.figure img { display: block; width: 100%; min-width: 640px; height: auto; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.card { border: 1px solid var(--line); border-radius: 4px; padding: 18px; }
+.card h3 { margin: 0 0 6px; font-size: 19px; }
+.card p { margin: 0; color: var(--muted); font-size: 16px; }
+.price { font-size: 30px; font-weight: bold; margin: 6px 0; }
+.price small { font-size: 15px; font-weight: normal; color: var(--muted); }
+.card.pro { border: 1.5px solid var(--gold); background: #FFFDF5; }
+ul.plain { margin: 10px 0 0; padding-left: 18px; color: var(--muted); font-size: 15px; }
+details { border-bottom: 1px solid var(--line); padding: 12px 0; }
+summary { cursor: pointer; font-weight: bold; }
+details p { color: var(--muted); margin: 8px 0 0; }
+footer { border-top: 1px solid var(--line); margin-top: 64px; padding-top: 18px; color: var(--muted); font-size: 15px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+[data-zh] { display: none; }
+html[lang="zh"] [data-en] { display: none; }
+html[lang="zh"] [data-zh] { display: revert; }
+@media (max-width: 600px) { h1 { margin-top: 36px; } .lead { font-size: 18px; } }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="brand"><img src="img/logo.png" alt="">Quietbit Figures</div>
+  <button class="lang" id="lang" type="button">中文</button>
+</header>
+
+<h1 data-en>Describe your method.<br>Get a <em>paper-ready figure</em>.</h1>
+<h1 data-zh>用一句话描述方法，<br>得到<em>能直接放进论文的图</em>。</h1>
+<p class="lead" data-en>Architecture diagrams for computer science, robotics and autonomous-driving papers. Your contribution is highlighted in one accent colour, and each colour means one thing. The style is the one top papers use, without an evening of nudging boxes in PowerPoint.</p>
+<p class="lead" data-zh>专为计算机、机器人、自动驾驶论文设计的方法图、流程图和对比图。你的贡献用唯一的强调色标出，每种颜色只表示一种含义，风格和顶会论文一致。不用再在 PPT 里一个框一个框地对齐。</p>
+
+<form class="signup" id="signup">
+  <input type="email" name="email" required placeholder="your@university.edu" aria-label="Email">
+  <select name="field" aria-label="Research field">
+    <option value="">Field / 研究方向</option>
+    <option>Robotics</option><option>Autonomous driving</option><option>Computer vision</option>
+    <option>Machine learning / NLP</option><option>Systems / networking</option><option>Other</option>
+  </select>
+  <button type="submit"><span data-en>Get early access</span><span data-zh>申请内测</span></button>
+</form>
+<div class="thanks" id="thanks"><span data-en>Thank you. We will email you when your early access is ready.</span><span data-zh>谢谢！内测开放时会发邮件通知你。</span></div>
+<p class="note" data-en>Early access is free. The first 100 researchers get Pro free for 3 months. No spam, and one click to leave.</p>
+<p class="note" data-zh>内测免费；前 100 位研究者赠送 3 个月 Pro。不发广告邮件，随时可退订。</p>
+
+<h2 data-en>Examples</h2><h2 data-zh>示例</h2>
+<p class="sub" data-en>Each figure below was drawn by our prototype from the sentence above it.</p>
+<p class="sub" data-zh>下面每张图都是原型根据上面那句话自动画出来的。</p>
+
+<div class="example">
+  <div class="prompt">Surround-view cameras share an image backbone. Our depth-aware view transformer lifts image features to a BEV feature map; a BEV encoder feeds a 3D detection head and an occupancy head. Highlight our module.</div>
+  <div class="arrow">↓</div>
+  <div class="figure"><img src="img/bev.svg" alt="BEV perception architecture with the proposed view transformer highlighted in gold"></div>
+</div>
+<div class="example">
+  <div class="prompt">Compare (a) teleoperation, where an operator drives a robot to collect demos, with (b) our approach, which turns head-camera human video into hand tracks and wrist/grip actions. Both train the same policy.</div>
+  <div class="arrow">↓</div>
+  <div class="figure"><img src="img/compare.svg" alt="Comparison of teleoperation and learning from human video"></div>
+</div>
+<div class="example">
+  <div class="prompt">Pipeline: egocentric video goes through hand detection, then our metric 3D fit through the fisheye intrinsics, then wrist and grip pseudo-actions; episodes are segmented and captioned by a VLM; output is a LeRobot dataset.</div>
+  <div class="arrow">↓</div>
+  <div class="figure"><img src="img/pipeline.svg" alt="Data pipeline from egocentric video to a LeRobot dataset"></div>
+</div>
+
+<h2 data-en>Why not BioRender or PowerPoint?</h2><h2 data-zh>为什么不用 BioRender 或 PPT？</h2>
+<div class="grid">
+  <div class="card"><h3 data-en>Made for CS and robotics</h3><h3 data-zh>为计算机和机器人领域设计</h3>
+    <p data-en>BioRender is built around biology icons. Method figures in CS are boxes, arrows, feature maps and data flows, so that is what we draw well.</p>
+    <p data-zh>BioRender 的素材以生物图标为主。计算机论文的方法图主要是框、箭头、特征图和数据流，我们专门把这些画好。</p></div>
+  <div class="card"><h3 data-en>Colour that carries meaning</h3><h3 data-zh>颜色有含义</h3>
+    <p data-en>Gold is your contribution, blue is prior work and purple is the input. Light fills with darker outlines keep it the same across every figure in the paper.</p>
+    <p data-zh>金色是你的贡献，蓝色是已有方法，紫色是输入；浅色填充、深色描边。整篇论文的图风格一致。</p></div>
+  <div class="card"><h3 data-en>Edit, don't redraw</h3><h3 data-zh>改字就行，不用重画</h3>
+    <p data-en>Change the sentence and the figure follows. Vector SVG export works today; editable PowerPoint and TikZ export are planned.</p>
+    <p data-zh>改描述，图就跟着改。现在可以导出 SVG 矢量图，可编辑的 PPT 和 TikZ 导出在开发中。</p></div>
+</div>
+
+<h2 data-en>Planned pricing</h2><h2 data-zh>计划定价</h2>
+<p class="sub" data-en>Nothing is charged during early access. These are the prices we plan to start with.</p>
+<p class="sub" data-zh>内测期间不收任何费用，下面是正式版计划的价格。</p>
+<div class="grid">
+  <div class="card"><h3>Free</h3><div class="price">$0</div>
+    <ul class="plain"><li data-en>5 figures a month</li><li data-zh>每月 5 张图</li><li>SVG / PNG</li></ul></div>
+  <div class="card pro"><h3>Pro</h3><div class="price">$8 <small data-en>/ month, students and academics</small><small data-zh>/ 月（学生和学术用户）</small></div>
+    <ul class="plain"><li data-en>Unlimited figures</li><li data-zh>不限张数</li><li data-en>Conference column widths (CVPR, ICRA, NeurIPS …)</li><li data-zh>会议版式（CVPR、ICRA、NeurIPS 等）</li><li data-en>PowerPoint and TikZ export</li><li data-zh>PPT 和 TikZ 导出</li></ul></div>
+  <div class="card"><h3>Lab</h3><div class="price">$39 <small data-en>/ month, 5 seats</small><small data-zh>/ 月（5 人）</small></div>
+    <ul class="plain"><li data-en>Shared lab style</li><li data-zh>全组统一风格</li><li data-en>Priority support</li><li data-zh>优先支持</li></ul></div>
+</div>
+
+<h2>FAQ</h2>
+<details><summary data-en>Can I use it today?</summary><summary data-zh>现在能用吗？</summary>
+  <p data-en>Not yet. The examples above come from our working prototype, and early access opens to the waitlist in batches.</p>
+  <p data-zh>还不能。上面的示例来自我们已经能运行的原型，内测会分批向登记的用户开放。</p></details>
+<details><summary data-en>Who is building this?</summary><summary data-zh>谁在做？</summary>
+  <p data-en>Quietbit Labs, founded by a PhD researcher in robotics and autonomous driving who got tired of drawing method figures by hand. We also maintain the open-source <a href="https://github.com/ChizkiyahuOhayon/ego2lerobot">ego2lerobot</a>.</p>
+  <p data-zh>Quietbit Labs，创始人是机器人和自动驾驶方向的博士研究者，受够了手画方法图。我们也维护开源工具 <a href="https://github.com/ChizkiyahuOhayon/ego2lerobot">ego2lerobot</a>。</p></details>
+<details><summary data-en>Is my unpublished method safe?</summary><summary data-zh>未发表的方法会泄露吗？</summary>
+  <p data-en>Your descriptions are used only to draw your figures. We never publish them and never use them to train models.</p>
+  <p data-zh>你的描述只用来画你的图，不公开，也不用于训练模型。</p></details>
+
+<footer>
+  <span>א · Quietbit Labs</span>
+  <span><a href="mailto:chizkiyahuohayon@gmail.com">chizkiyahuohayon@gmail.com</a></span>
+</footer>
+</main>
+<script>
+(function () {
+  var root = document.documentElement, btn = document.getElementById("lang");
+  function set(l) { root.lang = l; btn.textContent = l === "zh" ? "English" : "中文"; try { localStorage.setItem("lang", l); } catch (e) {} }
+  var saved = null; try { saved = localStorage.getItem("lang"); } catch (e) {}
+  set(saved || ((navigator.language || "").toLowerCase().indexOf("zh") === 0 ? "zh" : "en"));
+  btn.addEventListener("click", function () { set(root.lang === "zh" ? "en" : "zh"); });
+
+  // Sign-ups go to a Google Form owned by Quietbit Labs.
+  var FORM = "https://docs.google.com/forms/d/e/1FAIpQLSemphmtuYKK2nOntjaYUBWu_QuqPkFr2HDiVFYeUM3KClufIg/formResponse", EMAIL = "entry.167450037", FIELD = "entry.687664935", LANG = "entry.1299877417";
+  document.getElementById("signup").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var f = ev.target, body = new URLSearchParams();
+    body.append(EMAIL, f.email.value); body.append(FIELD, f.field.value || "unspecified"); body.append(LANG, root.lang);
+    fetch(FORM, { method: "POST", mode: "no-cors", body: body }).finally(function () {
+      f.style.display = "none"; document.getElementById("thanks").style.display = "block";
+    });
+  });
+})();
+</script>
+</body>
+</html>
